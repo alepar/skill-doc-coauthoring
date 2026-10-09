@@ -1,0 +1,10 @@
+# raw research ledgers (verbatim source passages) and working files stay local
+research/**/*.jsonl
+research/*/work/
+# run output
+.unclaude/
+node_modules/
+__pycache__/
+.DS_Store
+research/*/raw/
+research/*/research_state_*.json

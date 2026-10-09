@@ -1,0 +1,374 @@
+{
+ "schema_version": 1,
+ "question": "What is the best structure for a 'verify every claim' step in an AI-assisted document-writing workflow (doc-coauthoring Stage 3 claim check and unclaude claims lane)?",
+ "initial_facets": [
+  {
+   "id": "F1",
+   "question": "How to enumerate checkable atomic claims and what to skip",
+   "priority": "high"
+  },
+  {
+   "id": "F2",
+   "question": "How to route each claim to a source of truth and resolve precedence/freshness",
+   "priority": "high"
+  },
+  {
+   "id": "F3",
+   "question": "How to verify code/CLI claims (reading code, running commands, docs-as-tests)",
+   "priority": "high"
+  },
+  {
+   "id": "F4",
+   "question": "How to verify external/public facts (retrieval-augmented fact checking, citations)",
+   "priority": "high"
+  },
+  {
+   "id": "F5",
+   "question": "Verdict taxonomy, evidence reporting, auto-fix vs author, references",
+   "priority": "high"
+  },
+  {
+   "id": "F6",
+   "question": "Verifier failure modes and mitigations",
+   "priority": "high"
+  }
+ ],
+ "facets": [
+  {
+   "id": "F1",
+   "question": "How to enumerate checkable atomic claims and what to skip",
+   "priority": "high",
+   "active": true,
+   "source_types": [
+    "paper",
+    "tool-docs",
+    "practitioner"
+   ],
+   "status": "supported",
+   "counterevidence": "found",
+   "gap_note": "Decomposition sensitivity (Wanner et al.) and VeriScore critique of assume-all-verifiable.",
+   "query_ids": [
+    "q01",
+    "q02f",
+    "q02"
+   ],
+   "evidence_ids": [
+    "8badbd59f6433f1e",
+    "87adb58af7c4946b",
+    "bc43df909b32ae83",
+    "1bef99a8d8875194",
+    "45317ce566cfee1c",
+    "a5272283682f55f8"
+   ],
+   "scope_change": null,
+   "contested_positions": []
+  },
+  {
+   "id": "F2",
+   "question": "How to route each claim to a source of truth and resolve precedence/freshness",
+   "priority": "high",
+   "active": true,
+   "source_types": [
+    "paper",
+    "tool-docs",
+    "practitioner"
+   ],
+   "status": "supported",
+   "counterevidence": "searched-none-found",
+   "gap_note": "No empirical study found ranking code vs docs precedence; ordering in recommendation is a design inference from canonical-source and freshness practice.",
+   "query_ids": [
+    "q10",
+    "q13"
+   ],
+   "evidence_ids": [
+    "eff9f3d0648538b8",
+    "1d9cdda1d82e7912"
+   ],
+   "scope_change": null,
+   "contested_positions": []
+  },
+  {
+   "id": "F3",
+   "question": "How to verify code/CLI claims (reading code, running commands, docs-as-tests)",
+   "priority": "high",
+   "active": true,
+   "source_types": [
+    "paper",
+    "tool-docs",
+    "practitioner"
+   ],
+   "status": "supported",
+   "counterevidence": "searched-none-found",
+   "gap_note": "Docs-as-tests tools cover only executable examples; prose behavior claims still need code reading.",
+   "query_ids": [
+    "q08f",
+    "q05",
+    "q06",
+    "q08"
+   ],
+   "evidence_ids": [
+    "d999b68c99af8697",
+    "81472b24d3e059ef",
+    "da0d9d18ede5a063",
+    "388e8a1c5283d6c5",
+    "0f000133ec602195",
+    "bdb307258da01685",
+    "3c10ab0144f0addb"
+   ],
+   "scope_change": null,
+   "contested_positions": []
+  },
+  {
+   "id": "F4",
+   "question": "How to verify external/public facts (retrieval-augmented fact checking, citations)",
+   "priority": "high",
+   "active": true,
+   "source_types": [
+    "paper",
+    "tool-docs",
+    "practitioner"
+   ],
+   "status": "supported",
+   "counterevidence": "found",
+   "gap_note": "Citation audits show citations often fail to support statements; verify citations, do not trust them.",
+   "query_ids": [
+    "q03f",
+    "q08f",
+    "q09f",
+    "q03",
+    "q08",
+    "q09",
+    "q12"
+   ],
+   "evidence_ids": [
+    "cc73665f90ae724a",
+    "006a74da2ba8e2c5",
+    "4297997be798b165",
+    "ee26a6f1b2bd9d69",
+    "3d407f7e79a7021e"
+   ],
+   "scope_change": null,
+   "contested_positions": []
+  },
+  {
+   "id": "F5",
+   "question": "Verdict taxonomy, evidence reporting, auto-fix vs author, references",
+   "priority": "high",
+   "active": true,
+   "source_types": [
+    "paper",
+    "tool-docs",
+    "practitioner"
+   ],
+   "status": "supported",
+   "counterevidence": "not-applicable",
+   "gap_note": "Taxonomy is a design choice; FActScore Not-supported conflates contradicted and absent evidence.",
+   "query_ids": [
+    "q09f",
+    "q09",
+    "q11"
+   ],
+   "evidence_ids": [
+    "3bd755d643560e9e",
+    "6a84a41a8b39252f"
+   ],
+   "scope_change": null,
+   "contested_positions": []
+  },
+  {
+   "id": "F6",
+   "question": "Verifier failure modes and mitigations",
+   "priority": "high",
+   "active": true,
+   "source_types": [
+    "paper",
+    "tool-docs",
+    "practitioner"
+   ],
+   "status": "supported",
+   "counterevidence": "found",
+   "gap_note": "Self-preference, sycophancy, self-correction limits.",
+   "query_ids": [
+    "q04f",
+    "q07f",
+    "q04",
+    "q07",
+    "q11"
+   ],
+   "evidence_ids": [
+    "081f80096a0f2fd5",
+    "c9415587949a93dd",
+    "ec4ea678b0ac7ad1",
+    "a4287020df693a55",
+    "a7f55ae96926d177",
+    "33222d19eda19235",
+    "7cb06a37a6b51201"
+   ],
+   "scope_change": null,
+   "contested_positions": []
+  }
+ ],
+ "completed_rounds": [
+  {
+   "round": 1,
+   "query_ids": [
+    "q01",
+    "q02f",
+    "q03f",
+    "q04f",
+    "q07f",
+    "q08f",
+    "q09f",
+    "q05",
+    "q06",
+    "q02",
+    "q03",
+    "q04",
+    "q07",
+    "q08",
+    "q09"
+   ],
+   "families": [
+    "counterevidence",
+    "entity",
+    "literal",
+    "source-specific",
+    "synonym"
+   ],
+   "target_high_priority_facet_ids": [
+    "F1",
+    "F3",
+    "F4",
+    "F5",
+    "F6"
+   ],
+   "new_relevant_source_ids": [
+    "dd60addc5fe69a87",
+    "1ec79c403d4c5593",
+    "d2c7a73ce0c7177d",
+    "98bd58ddaa4e9424",
+    "152e237d233c2a81",
+    "ed938a29bf421fe1",
+    "f2dcdab7e7bbd5d1",
+    "5817422b1751aef9",
+    "be6925d2e70d2b98",
+    "d3c961da83b53d98",
+    "f38d3fba5324e66b",
+    "b1f6a8047c37d10f",
+    "d7ef622187acc55b",
+    "8704997ce5824d92",
+    "d6fb2b001042aa3d",
+    "de57da1de7b7aa98",
+    "7a4251055ce0ad2d",
+    "ed923f675259bd17"
+   ],
+   "material_changes": [
+    {
+     "facet_id": "F1",
+     "kind": "status",
+     "before": "unsearched",
+     "after": "supported"
+    },
+    {
+     "facet_id": "F3",
+     "kind": "status",
+     "before": "unsearched",
+     "after": "supported"
+    },
+    {
+     "facet_id": "F4",
+     "kind": "status",
+     "before": "unsearched",
+     "after": "supported"
+    },
+    {
+     "facet_id": "F5",
+     "kind": "status",
+     "before": "unsearched",
+     "after": "supported"
+    },
+    {
+     "facet_id": "F6",
+     "kind": "status",
+     "before": "unsearched",
+     "after": "supported"
+    },
+    {
+     "facet_id": "F1",
+     "kind": "counterevidence",
+     "before": "unchecked",
+     "after": "found"
+    },
+    {
+     "facet_id": "F3",
+     "kind": "counterevidence",
+     "before": "unchecked",
+     "after": "searched-none-found"
+    },
+    {
+     "facet_id": "F6",
+     "kind": "counterevidence",
+     "before": "unchecked",
+     "after": "found"
+    }
+   ],
+   "coverage_ready_after": false
+  },
+  {
+   "round": 2,
+   "query_ids": [
+    "q10",
+    "q11",
+    "q12",
+    "q13"
+   ],
+   "families": [
+    "counterevidence",
+    "source-specific"
+   ],
+   "target_high_priority_facet_ids": [
+    "F2",
+    "F4",
+    "F6"
+   ],
+   "new_relevant_source_ids": [
+    "930c4bb9ee0022fc",
+    "2baa75632294cdba",
+    "a81b34ca5fce8b85"
+   ],
+   "material_changes": [
+    {
+     "facet_id": "F2",
+     "kind": "status",
+     "before": "unsearched",
+     "after": "supported"
+    },
+    {
+     "facet_id": "F2",
+     "kind": "counterevidence",
+     "before": "unchecked",
+     "after": "searched-none-found"
+    },
+    {
+     "facet_id": "F4",
+     "kind": "counterevidence",
+     "before": "unchecked",
+     "after": "found"
+    }
+   ],
+   "coverage_ready_after": true
+  }
+ ],
+ "stop": {
+  "reason": "budget-exhausted",
+  "at": "2026-10-08",
+  "round": 2,
+  "unresolved_high_priority_facet_ids": [],
+  "remaining_gaps": [
+   "No empirical evaluation of LLM claim-checkers specifically on software docs/READMEs",
+   "Code-over-docs precedence is a design inference, not an evidenced ranking",
+   "Two post-readiness low-yield probe rounds not run (Quick budget)"
+  ],
+  "basis": "Quick mode budget: 2 rounds; all high-priority facets have direct evidence"
+ }
+}

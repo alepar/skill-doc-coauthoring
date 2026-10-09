@@ -1,0 +1,14 @@
+{
+  "name": "skill-doc-coauthoring",
+  "description": "Document co-authoring and de-AI editing skills",
+  "owner": { "name": "alepar" },
+  "plugins": [
+    {
+      "name": "skill-doc-coauthoring",
+      "description": "doc-coauthoring: structured, reader-tested document co-authoring. unclaude: lane-based scan and fix of AI-sounding prose, false precision and unverified claims",
+      "version": "0.1.0",
+      "source": "./",
+      "author": { "name": "alepar" }
+    }
+  ]
+}

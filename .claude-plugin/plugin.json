@@ -1,0 +1,19 @@
+{
+  "name": "skill-doc-coauthoring",
+  "description": "Co-author documents with a structured, reader-tested workflow (doc-coauthoring), and strip AI-sounding patterns, false precision and unverified claims from text (unclaude)",
+  "version": "0.1.0",
+  "author": {
+    "name": "alepar"
+  },
+  "homepage": "https://github.com/alepar/skill-doc-coauthoring",
+  "repository": "https://github.com/alepar/skill-doc-coauthoring",
+  "keywords": [
+    "skills",
+    "writing",
+    "documentation",
+    "editing",
+    "workflow",
+    "claude"
+  ],
+  "license": "Apache-2.0"
+}

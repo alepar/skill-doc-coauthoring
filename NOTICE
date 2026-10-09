@@ -1,0 +1,15 @@
+skill-doc-coauthoring
+Copyright 2026 alepar
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+skills/doc-coauthoring is a modified version of the doc-coauthoring skill from
+https://github.com/anthropics/skills (skills/doc-coauthoring/SKILL.md, commit of
+2025-12-04), Copyright Anthropic, PBC. The anthropics/skills README states that its skills
+are open source under the Apache License, Version 2.0, except the document skills (docx,
+pdf, pptx, xlsx); the doc-coauthoring folder carries no license file of its own.
+Changes: the workflow was revised and extended per research/doc-coauthoring/report.md;
+reference files and evals were added.
+
+skills/unclaude borrows the scout-lane pipeline structure of
+https://github.com/alepar/prompting-guide-roast.

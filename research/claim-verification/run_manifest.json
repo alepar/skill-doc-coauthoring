@@ -1,0 +1,40 @@
+{
+ "query": "What is the best structure for a 'verify every claim' step in an AI-assisted document-writing workflow (doc-coauthoring Stage 3 claim check and unclaude claims lane)?",
+ "mode": "quick",
+ "created": "2026-10-08",
+ "provider_config": {
+  "primary": "search CLI"
+ },
+ "search_preflight": {
+  "status": "ok",
+  "reason": "search CLI returned partial_success: perplexity quota 401 and serper credits 400; remaining providers returned results",
+  "selected_tool": "search CLI"
+ },
+ "artifact_paths": {
+  "coverage": "coverage.json",
+  "queries": "queries.jsonl",
+  "sources": "sources.jsonl",
+  "evidence": "evidence.jsonl",
+  "claims": "claims.jsonl",
+  "retrievals": "retrievals.jsonl"
+ },
+ "retrieval_stop": {
+  "reason": "budget-exhausted",
+  "at": "2026-10-08",
+  "round": 2,
+  "unresolved_high_priority_facet_ids": [],
+  "remaining_gaps": [
+   "No empirical evaluation of LLM claim-checkers specifically on software docs/READMEs",
+   "Code-over-docs precedence is a design inference, not an evidenced ranking",
+   "Two post-readiness low-yield probe rounds not run (Quick budget)"
+  ],
+  "basis": "Quick mode budget: 2 rounds; all high-priority facets have direct evidence"
+ },
+ "reporting": {
+  "output_mode": "markdown",
+  "requested_formats": [],
+  "final_report_path": null,
+  "dossiers": [],
+  "note": "report.md write blocked by harness for subagents; full report returned inline to caller"
+ }
+}

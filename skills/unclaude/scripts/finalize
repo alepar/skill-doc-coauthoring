@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# finalize — see finalize.mjs. Usage: bash finalize --help. Exit code 4: node unavailable.
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+command -v node >/dev/null 2>&1 || {
+  echo "NODE_UNAVAILABLE: node 22 or later is required for unclaude's scripts."
+  exit 4
+}
+major="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)"
+if [ "$major" -lt 22 ]; then
+  echo "NODE_UNAVAILABLE: node 22 or later is required for unclaude's scripts (found $(node --version))."
+  exit 4
+fi
+exec node "$here/finalize.mjs" "$@"

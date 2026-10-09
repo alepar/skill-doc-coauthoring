@@ -1,0 +1,96 @@
+[
+ {
+  "id": "design-doc-missing-non-goal",
+  "skills": [
+   "doc-coauthoring"
+  ],
+  "query": "Help me write a design doc for moving our nightly billing batch job to an event-driven pipeline on Kafka. Readers are the payments and SRE teams. Context: the batch takes 4h and blocks month-end close; we already run Kafka for order events; finance wants same-day invoices. I'm thinking we keep the old batch running in parallel for a month.",
+  "files": [],
+  "expected_behavior": [
+   "Offers the three-stage workflow and asks whether to use it or work freeform",
+   "Asks who reads the doc and what they should be able to do afterwards, not only 'who is the audience'",
+   "Writes back a brief marking each item as stated by the user or assumed by Claude, and asks for corrections before proposing structure",
+   "Proposes design-doc sections including Goals/Non-goals and Alternatives with a do-nothing option",
+   "In the gap check, notices there is no plausible non-goal yet (e.g. real-time invoicing, migrating other batch jobs) and asks the user rather than inventing one",
+   "Asks for the user's own options before brainstorming its own, and marks its own as new",
+   "After drafting a section, lists the specifics it introduced (numbers, system names) for the user to confirm"
+  ]
+ },
+ {
+  "id": "low-stakes-gets-mini-doc",
+  "skills": [
+   "doc-coauthoring"
+  ],
+  "query": "I need to write a doc proposing we rename the `utils` package in our internal CLI to `helpers`. Can you help me do the full design doc process?",
+  "files": [],
+  "expected_behavior": [
+   "Asks about the penalty for being wrong or whether doing the change is cheaper than writing about it",
+   "Proposes a one-page mini-doc (problem, decision, alternatives, risks, open questions) or no doc, instead of the full design-doc template",
+   "Respects the user's choice if they still want the full process"
+  ]
+ },
+ {
+  "id": "reader-test-undefined-acronym",
+  "skills": [
+   "doc-coauthoring"
+  ],
+  "query": "My decision doc is done (attached). Run the reader testing stage on it. The point is that we should adopt the RCA template for all P1 incidents starting next quarter, and the on-call lead owns the first draft of each RCA.",
+  "files": [
+   "evals/files/decision-doc-acronym.md"
+  ],
+  "expected_behavior": [
+   "Writes an answer key (point, decisions/actions, 3-6 scenarios with expected answers, likely misreadings) and asks the user to confirm it before testing",
+   "Spawns fresh, non-fork subagents given only the document and a reader role, with no hint that the user wrote it",
+   "Asks readers to quote evidence, say 'Not stated in the document' when appropriate, and list knowledge they had to supply",
+   "Detects that 'RCA' and 'P1' are never defined, or that the owner of the first draft is not stated in the doc, from reader answers that relied on supplied knowledge or said not stated",
+   "Fixes the gap in the document rather than explaining in chat, and retests with new subagents",
+   "Does not ask readers 'is this clear?' or 'what is ambiguous?' as the primary check"
+  ]
+ },
+ {
+  "id": "false-precision-in-draft",
+  "skills": [
+   "doc-coauthoring"
+  ],
+  "query": "Draft the 'Expected impact' section of our strategy memo for the VP. My notes: we think the migration saves roughly 40-60k a year in infra, maybe more if traffic grows; latency should drop a lot, we measured 310ms -> 180ms p95 on 3 test runs.",
+  "files": [],
+  "expected_behavior": [
+   "States the savings as a range or rounded approximate figure (e.g. ~$40-60k/yr), not a single precise number like $51,734.22",
+   "Keeps the measured latency figures but states their basis (3 test runs) or presents them with appropriate caution",
+   "Does not invent additional numbers (e.g. percentage improvements in user satisfaction) and lists any specifics it introduced",
+   "Writes the reasoning as prose, not a bullet list of fragments"
+  ]
+ },
+ {
+  "id": "author-position-first",
+  "skills": [
+   "doc-coauthoring"
+  ],
+  "query": "We're in Stage 2 of my RFC about choosing between Postgres logical replication and Debezium for CDC. Let's do the Proposal section next.",
+  "files": [],
+  "expected_behavior": [
+   "Asks which option the user favours and why, in their own words, before drafting the Proposal",
+   "Asks what the user already thinks belongs in the section before offering its own brainstorm",
+   "Does not pick the option for the user or present its own recommendation as the user's position"
+  ]
+ },
+ {
+  "id": "claim-check-against-code",
+  "skills": [
+   "doc-coauthoring"
+  ],
+  "query": "Our README for the sync tool is drafted (files/mini-cli/README.md, code in files/mini-cli/sync.py). Skip straight to Stage 3: run the claim check, then a short reader test.",
+  "files": [
+   "evals/files/mini-cli/README.md",
+   "evals/files/mini-cli/sync.py"
+  ],
+  "expected_behavior": [
+   "Extracts the checkable claims as self-contained lines (the --dry-run flag, the default of 8 parallel uploads, 3 retries) and marks the argparse-over-click rationale author-only",
+   "Routes each to the code or to `python sync.py --help`, and verifies in a fresh subagent that is given the claims and routes but not the README",
+   "Finds --dry-run contradicted (the flag is --preview) and the default contradicted (4, not 8), quoting sync.py or the --help output as evidence, and fixes these mechanical errors",
+   "Reports the retry count mismatch (MAX_RETRIES = 5 versus 3) to the user as a code-versus-docs question instead of silently picking one",
+   "Does not add a References section citing the project's own files",
+   "Runs the claim check before the reader test"
+  ]
+ }
+]
