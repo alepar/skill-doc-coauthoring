@@ -1,7 +1,7 @@
 // mock-engine.mjs — run the unclaude engine under node with stub agent()/parallel(), then finalize, and
 // assert on the results. Covers lane assembly by source family, prompt filling, protected-span
-// suppression, quote verification, the quotation-mismatch path, duplicate merging, the weak-hit
-// cluster rule, dead scouts, claims and reference candidates, the dry-run stub path, author notes, sources of
+// suppression, quote verification, the quotation-mismatch path, duplicate merging, weak findings
+// acted on without a cluster, dead scouts, claims and reference candidates, the dry-run stub path, author notes, sources of
 // truth, local sources kept out of References, and the filled reviewer/guard prompts.
 // Usage: node tests/mock-engine.mjs   (exit 0 = all assertions passed)
 import { execFileSync } from 'node:child_process'
@@ -119,10 +119,10 @@ const HOPPER = "The most dangerous phrase in the language is: we've always done 
   assert.deepEqual([...piv.lanes].sort(), ['lexical', 'significance'])
   assert.equal(piv.strength, 'strong')
   assert.equal(json.findings.filter(f => f.quote === 'pivotal').length, 0)
-  // cluster rule: two weak lexical hits in one paragraph with a strong claims finding are acted on
+  // weak hits are acted on, both in a paragraph with other findings and alone in their paragraph
   assert.ok(by('Additionally') && by('robust'))
-  // isolated weak hit in a paragraph with nothing else
-  assert.deepEqual(json.isolated.map(f => f.quote), ['the cutover'])
+  assert.equal(by('the cutover')?.strength, 'weak')
+  assert.equal(json.isolated, undefined)
   // inside a protected rule span
   assert.deepEqual(json.suppressed.map(f => f.quote), ['never skip the dry run'])
   // phantom quote
@@ -138,8 +138,9 @@ const HOPPER = "The most dangerous phrase in the language is: we've always done 
   assert.equal(json.protectedSpans.length, 3)
   assert.equal(summary.authorFlags, 2)
   for (const s of ['## Findings to act on', '### ¶2 (lines 3-3)', '## Quotation checks', '## Claims checked', '## Reference candidates',
-    '## Isolated weak hits (1', '## Inside protected spans (1', '## Unverified quotes (1', '1 scout(s) returned nothing: rhythm'])
+    '## Inside protected spans (1', '## Unverified quotes (1', '1 scout(s) returned nothing: rhythm'])
     assert.ok(report.includes(s), `report has ${s}`)
+  assert.ok(!report.includes('Isolated weak hits'))
 }
 
 // ---------- case B: openai source, lane selection

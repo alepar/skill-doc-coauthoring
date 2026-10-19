@@ -21,13 +21,13 @@ Workflow           protect pass (spans nobody may edit; quotations checked again
                    → 13 lane scouts (per chunk, or whole document)
                    → verifiers check each extracted claim against its source, without seeing the text
 finalize (node)    verify quotes → drop findings in protected spans → merge duplicates
-                   → weak-hit cluster rule → one numbered report, grouped by paragraph
+                   → one numbered report, grouped by paragraph
 reviewer (agent)   works through the report finding by finding and edits the text
 guard (agent)      checks the reviewer's diff for known regressions and reverts them
 ```
 
 - **Lanes:** lexical, contrast, syntax, rhythm, shape, significance, stance, residue, figurative, generic, redundancy, claims, precision. Lane notes cover Claude, OpenAI and Gemini; `--source` picks which apply.
-- **Weak tells count only in clusters.** A weak tell, such as one "crucial", is acted on only next to another finding in the same paragraph, or when a document-wide lane finds it at a high rate. Single tells are common in human writing.
+- **Every tell is acted on, weak ones included.** A single weak tell, such as one "crucial", is rewritten like any other finding; the strong/weak label only tells the reviewer how strong the evidence is. The keep list and protected spans are the only exemptions.
 - **Claims checked against their sources.** A wrong flag or version is corrected to what the source says; a contradiction about meaning, or a claim the text depends on that nobody could verify, gets an `[AUTHOR: …]` note for you.
 - **Numbers at the precision the evidence supports.** The precision lane flags estimates written to the last digit, like cents in a strategy doc.
 - **Your decisions hold.** `--author-notes` lists what you have settled (a claim made ahead of a release, framing you chose); every scout, the reviewer and the guard honor it.
@@ -61,7 +61,7 @@ Or copy or symlink `skills/doc-coauthoring` and `skills/unclaude` into `~/.claud
 
 ## Test
 
-- `node tests/mock-engine.mjs` runs the unclaude engine with stub agents and checks prompt assembly, protected spans, quote verification, merging, the cluster rule, claim verification, author notes and the dry-run path.
+- `node tests/mock-engine.mjs` runs the unclaude engine with stub agents and checks prompt assembly, protected spans, quote verification, merging, claim verification, author notes and the dry-run path.
 - `skills/doc-coauthoring/evals/evals.json` holds scenario evals for the co-authoring workflow.
 
 ## Research

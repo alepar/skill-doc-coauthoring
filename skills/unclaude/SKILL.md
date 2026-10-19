@@ -59,15 +59,15 @@ Thirteen scout lanes in `lanes/`. Passage lanes run once per chunk of about 80 l
 
 **Claim verification.** The claims lane extracts each checkable claim as a self-contained statement with a type and a route (a path, a read-only command, a URL). Verifiers, one per 12 claims, get only the claims, routes and sources of truth, never the text, and return holds, contradicted, stale-source or unverifiable with quoted evidence. A contradicted claim becomes a finding (a mechanical correction such as a wrong flag is applied, even inside a code span; one about meaning is flagged for the author), and so does a stale or unverifiable load-bearing one. Author-only claims (rationale, plans, intent) are listed, not checked. Only external sources that hold become References.
 
-Each hunt item is `[strong]` (a finding on one sighting) or `[weak]` (acted on only alongside another finding in the same paragraph, or when a document-scope lane reports it, since those lanes apply their own rate thresholds). Single weak hits are listed in the report but not acted on; humans use those words too.
+Each hunt item is `[strong]` or `[weak]`. Both are acted on: every verified finding outside a protected span goes to the reviewer, including a single weak hit. The label tells the reviewer how strong the evidence is; it does not gate. The keep list still decides what is not a finding at all.
 
 ## What is where
 
 - `engine/unclaude.js`: the Workflow script (protect → scouts → verify). It returns raw findings and claim verdicts; it does no judging of style.
-- `scripts/finalize.mjs`: verifies every quote against the snapshot, drops findings inside protected spans, merges duplicates, applies the weak-hit cluster rule, numbers findings in document order and renders the report.
+- `scripts/finalize.mjs`: verifies every quote against the snapshot, drops findings inside protected spans, merges duplicates, numbers findings in document order and renders the report.
 - `prompts/`: protect, scout, verify, reviewer and guard templates.
 - `reference/digest.md`: the pattern entries lanes cite (X cross-family, C Claude, O OpenAI, G Gemini, V verification, N numbers), the reviewer rules R01–R11, and the keep list of things never to flag. Built from `research/unclaude/report.md` in this repo.
 
 ## Dry run
 
-`prepare --dry-run` swaps every agent for a haiku stub returning canned JSON, to check the pipeline after editing lanes, prompts or the engine. `node tests/mock-engine.mjs` in the repo covers the merge, suppression and cluster logic without any agents.
+`prepare --dry-run` swaps every agent for a haiku stub returning canned JSON, to check the pipeline after editing lanes, prompts or the engine. `node tests/mock-engine.mjs` in the repo covers the merge and suppression logic without any agents.

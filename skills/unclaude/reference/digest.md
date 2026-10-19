@@ -5,7 +5,7 @@ The entries lanes, scouts and the reviewer cite. Ids: **X** cross-family pattern
 Derived from `research/unclaude/report.md` (UltraDeep run, October 2026), which carries the full evidence and bibliography. Per-model rates come mostly from 2026 industry studies and go stale with each model release; pattern classes last longer than their surface forms.
 
 Two principles govern every lane:
-- **Clusters, not single hits.** Fixed AI-vocabulary lists perform near chance as detectors; expert readers who use LLMs heavily succeed by combining cues. A `[weak]` hunt item is a finding only with another tell in the same paragraph or above its density threshold.
+- **Fix every hit, but know which are weak.** Fixed AI-vocabulary lists perform near chance as detectors, and expert readers succeed by combining cues, so a `[weak]` hit is weak evidence on its own. This pipeline still rewrites it: the goal is clean text, not a detection verdict. The keep list is the limit.
 - **Fix the cause, never optimize for a detector.** Detectors are unreliable and biased against non-native writers; paraphrasing defeats them without improving the text.
 
 ## Cross-family patterns (X)
@@ -249,7 +249,7 @@ When the claims lane recorded external sources (URLs, DOIs), end the document wi
 - **K2** Descriptive headings and question headings in long, scannable documents. ([GOV.UK: clear structure](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-structure/))
 - **K3** Em dashes at or below the writer's own rate, or below about 4 per 1,000 words when no sample exists (h); dashes in ranges, code and compound modifiers.
 - **K4** Calibrated hedges in academic, scientific, legal, medical and safety writing; single ordinary hedges (perhaps, likely, tends to).
-- **K5** A single occurrence of a listed word (delve, crucial, robust, key) with no other tell nearby; humans use them, and 31% of expert annotators' explanations for their false positives cited such vocabulary in human-written text. ([Russell et al.](https://arxiv.org/abs/2501.15654))
+- **K5** Retired (October 2026). It exempted a single listed word (delve, crucial, robust, key) with no other tell nearby; such hits are now rewritten as weak findings. The evidence behind it still holds for provenance, not editing: a single listed word does not show a text is AI-written, since 31% of expert annotators' explanations for their false positives cited such vocabulary in human-written text. ([Russell et al.](https://arxiv.org/abs/2501.15654))
 - **K6** Listed words in their literal or technical sense: robust estimator, cryptographic key, landscape orientation, Kerberos realm, load-bearing wall, foster care.
 - **K7** Positive or hype words in academic abstracts as such; they rose for decades before LLMs. ([BMJ 2015](https://doi.org/10.1136/bmj.h6467))
 - **K8** Superlatives and intensifiers that are literally true; "very", "perhaps", "in order to", "the fact that" and plain is/has lean human.

@@ -1,6 +1,6 @@
 // finalize.mjs — turn the unclaude engine's result into the single findings report the reviewer works
 // from. Everything here is deterministic: quote verification against the snapshot, protected-span
-// suppression, duplicate merging, the weak-hit cluster rule, numbering and markdown rendering.
+// suppression, duplicate merging, numbering and markdown rendering.
 // Invoked through ./finalize (bash wrapper). Exit codes: 0 ok, 2 bad input.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { resolve, dirname, join, extname } from 'node:path'
@@ -103,7 +103,6 @@ const quoteFindings = mismatched.map(q => ({
   suggestedRewrite: q.sourceText ?? '',
 }))
 const CONF = { high: 3, medium: 2, low: 1 }
-const scopes = R.coverage?.laneScopes ?? {}
 const located = [...quoteFindings, ...(R.findings ?? [])].map(f => {
   const loc = locate(f.quote, f.lineStart)
   return { ...f, check: loc.check, lineStart: loc.lineStart ?? f.lineStart, lineEnd: loc.lineEnd ?? f.lineEnd ?? f.lineStart, offset: loc.offset ?? 0 }
@@ -144,13 +143,9 @@ const findings = merged.map(g => {
     mergedCount: ms.length,
   }
 })
-// Cluster rule: a weak finding is acted on only with another finding in its paragraph, or when a
-// document-scope lane (which applies its own rate threshold) reported it.
-const perPara = {}
-for (const f of findings) perPara[f.para] = (perPara[f.para] ?? 0) + 1
-const isActive = f => f.strength === 'strong' || (perPara[f.para] ?? 0) >= 2 || f.lanes.some(l => scopes[l] === 'document')
-const active = findings.filter(isActive).sort((a, b) => a.offset - b.offset || a.lineEnd - b.lineEnd)
-const isolated = findings.filter(f => !isActive(f))
+// Every verified finding outside a protected span is acted on, weak ones included; strength is
+// reported for the reviewer but does not gate.
+const active = [...findings].sort((a, b) => a.offset - b.offset || a.lineEnd - b.lineEnd)
 active.forEach((f, i) => { f.id = `U${i + 1}` })
 
 // ---- claims and references
@@ -191,7 +186,7 @@ const authorFlags = active.filter(f => f.action === 'flag').length
 const out = []
 out.push(`# unclaude report: ${R.label || R.target?.path}`, '')
 out.push(`${date} · \`${R.target?.path}\` (${R.target?.lines} lines, ${R.target?.words} words) · written by: ${R.source}${R.dryRun ? ' · **DRY RUN (stub agents; findings are canned)**' : ''}`, '')
-out.push(`${cov.scouts ?? 0} scouts · ${(R.findings ?? []).length} raw findings + ${quoteFindings.length} quotation mismatches → **${active.length} to act on** (${active.filter(f => f.strength === 'strong').length} strong, ${active.length - active.filter(f => f.strength === 'strong').length} weak in clusters; ${authorFlags} need the author) · ${isolated.length} isolated weak hits not acted on · ${suppressed.length} inside protected spans · ${claims.length} claims checked`, '')
+out.push(`${cov.scouts ?? 0} scouts · ${(R.findings ?? []).length} raw findings + ${quoteFindings.length} quotation mismatches → **${active.length} to act on** (${active.filter(f => f.strength === 'strong').length} strong, ${active.length - active.filter(f => f.strength === 'strong').length} weak; ${authorFlags} need the author) · ${suppressed.length} inside protected spans · ${claims.length} claims checked`, '')
 const gaps = []
 if (cov.protectDead) gaps.push('the protect pass returned nothing (no protected spans, no quotation checks)')
 if (cov.deadScouts?.length) gaps.push(`${cov.deadScouts.length} scout(s) returned nothing: ${cov.deadScouts.join(', ')}`)
@@ -248,12 +243,6 @@ if (localSources.length) {
   for (const r of localSources) out.push(`- ${r.title} — \`${r.ref}\` (lines ${[...new Set(r.lines)].join(', ')})`)
   out.push('')
 }
-if (isolated.length) {
-  out.push(`## Isolated weak hits (${isolated.length}, not acted on)`, '', 'Weak tells with no other finding in their paragraph. A single weak hit is normal in human writing (K5).', '')
-  out.push('| Line | Lane | Pattern | Quote |', '|---|---|---|---|')
-  for (const f of isolated) out.push(`| ${span(f)} | ${f.lanes.join(', ')} | ${cell(f.patterns.join(' / '))} | ${cell(String(f.quote).slice(0, 100))} |`)
-  out.push('')
-}
 if (suppressed.length) {
   out.push(`## Inside protected spans (${suppressed.length}, not acted on)`, '', '| Line | Lane | Pattern | Quote |', '|---|---|---|---|')
   for (const f of suppressed) out.push(`| ${span(f)} | ${f.lane} | ${cell(f.pattern)} | ${cell(String(f.quote).slice(0, 100))} |`)
@@ -275,7 +264,7 @@ const jsonPath = resolve(opt.jsonOut ?? join(dirname(reportPath), 'findings.json
 writeFileSync(reportPath, out.join('\n'))
 writeFileSync(jsonPath, JSON.stringify({
   label: R.label, target: R.target, source: R.source, date, dryRun: R.dryRun, coverage: cov,
-  findings: active, isolated, suppressed, unverified, protectedSpans: spans, quoteChecks, claims, references, localSources,
+  findings: active, suppressed, unverified, protectedSpans: spans, quoteChecks, claims, references, localSources,
 }, null, 1))
 
 // ---- reviewer and guard prompts, filled so the orchestrator only has to point an agent at them
@@ -308,7 +297,7 @@ if (refs.promptsDir) for (const p of ['reviewer', 'guard']) {
 }
 console.log(JSON.stringify({
   report: resolve(opt.out), act: active.length, strong: active.filter(f => f.strength === 'strong').length,
-  authorFlags, isolated: isolated.length, suppressed: suppressed.length, unverified: unverified.length,
+  authorFlags, suppressed: suppressed.length, unverified: unverified.length,
   claims: claims.length, references: references.length, localSources: localSources.length, gaps,
   reviewerPrompt: prompts.reviewer ?? null, guardPrompt: prompts.guard ?? null,
 }, null, 1))
