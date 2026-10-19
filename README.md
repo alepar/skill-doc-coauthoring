@@ -44,9 +44,16 @@ As a Claude Code plugin:
 /plugin install skill-doc-coauthoring@skill-doc-coauthoring
 ```
 
-Or copy or symlink `skills/doc-coauthoring` and `skills/unclaude` into `~/.claude/skills/`.
+As a Codex plugin:
 
-`unclaude` needs Claude Code with the Workflow tool, and node 22 or later.
+```
+codex plugin marketplace add alepar/skill-doc-coauthoring
+codex plugin add skill-doc-coauthoring@skill-doc-coauthoring
+```
+
+Or copy or symlink `skills/doc-coauthoring` and `skills/unclaude` into `~/.claude/skills/`. Install one way only: a standalone copy next to the plugin gives two skills with the same name.
+
+`unclaude` needs Claude Code with the Workflow tool, and node 22 or later; under Codex only `doc-coauthoring` runs.
 
 ## Use
 

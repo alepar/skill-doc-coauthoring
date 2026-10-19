@@ -1,0 +1,20 @@
+{
+  "name": "skill-doc-coauthoring",
+  "interface": {
+    "displayName": "Doc co-authoring"
+  },
+  "plugins": [
+    {
+      "name": "skill-doc-coauthoring",
+      "source": {
+        "source": "url",
+        "url": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

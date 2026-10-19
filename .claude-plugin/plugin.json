@@ -1,7 +1,7 @@
 {
   "name": "skill-doc-coauthoring",
   "description": "Co-author documents with a structured, reader-tested workflow (doc-coauthoring), and strip AI-sounding patterns, false precision and unverified claims from text (unclaude)",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "alepar"
   },
